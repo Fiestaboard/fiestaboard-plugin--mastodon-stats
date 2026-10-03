@@ -1,0 +1,280 @@
+{
+  "id": "mastodon_stats",
+  "name": "Mastodon Stats",
+  "version": "1.0.0",
+  "description": "Show follower, following and post counts for any Mastodon account, with an optional change since the start of the day. No sign-in needed.",
+  "author": "FiestaBoard Team",
+  "repository": "https://github.com/Fiestaboard/fiestaboard-plugin--mastodon-stats",
+  "documentation": "README.md",
+  "icon": "users",
+  "category": "data",
+  "fiestaboard_version": ">=9.5.0",
+  "min_refresh_seconds": 300,
+  "settings_schema": {
+    "type": "object",
+    "properties": {
+      "enabled": {
+        "type": "boolean",
+        "title": "Enable Mastodon Stats",
+        "default": false
+      },
+      "account": {
+        "type": "string",
+        "title": "Account",
+        "description": "The account to show, as @username@instance (for example @alice@mastodon.social)."
+      },
+      "access_token": {
+        "type": "string",
+        "title": "Access Token (optional)",
+        "description": "Only needed if your instance refuses public lookups. Create one under Preferences > Development > New application on your instance with the read:accounts scope, then paste its access token here.",
+        "ui:widget": "password"
+      },
+      "show_daily_change": {
+        "type": "boolean",
+        "title": "Show Daily Change",
+        "description": "Work out how much each count has changed since the first check of the day (local time). Resets when FiestaBoard restarts.",
+        "default": true
+      },
+      "refresh_seconds": {
+        "type": "integer",
+        "title": "Refresh Interval (seconds)",
+        "description": "How often to ask the instance for new counts.",
+        "default": 900,
+        "minimum": 300,
+        "maximum": 86400
+      }
+    },
+    "required": [
+      "account"
+    ]
+  },
+  "variables": {
+    "groups": {
+      "account": {
+        "label": "Account"
+      },
+      "counts": {
+        "label": "Counts"
+      },
+      "daily_change": {
+        "label": "Daily Change"
+      }
+    },
+    "simple": {
+      "handle": {
+        "description": "The account as @username@instance",
+        "type": "string",
+        "max_length": 22,
+        "group": "account",
+        "example": "@ALICE@EXAMPLE.SOCIAL"
+      },
+      "username": {
+        "description": "Username without the instance",
+        "type": "string",
+        "max_length": 22,
+        "group": "account",
+        "example": "ALICE"
+      },
+      "display_name": {
+        "description": "Profile display name (emoji dropped)",
+        "type": "string",
+        "max_length": 22,
+        "group": "account",
+        "example": "ALICE EXAMPLE"
+      },
+      "instance": {
+        "description": "The instance the account lives on",
+        "type": "string",
+        "max_length": 22,
+        "group": "account",
+        "example": "EXAMPLE.SOCIAL"
+      },
+      "last_post": {
+        "description": "Date of the most recent post, such as OCT 1 (empty if none)",
+        "type": "string",
+        "max_length": 6,
+        "group": "account",
+        "example": "OCT 1"
+      },
+      "followers": {
+        "description": "Followers, with thousands separators",
+        "type": "string",
+        "max_length": 11,
+        "group": "counts",
+        "example": "12,345"
+      },
+      "following": {
+        "description": "Accounts followed, with thousands separators",
+        "type": "string",
+        "max_length": 11,
+        "group": "counts",
+        "example": "321"
+      },
+      "posts": {
+        "description": "Posts, with thousands separators",
+        "type": "string",
+        "max_length": 11,
+        "group": "counts",
+        "example": "4,567"
+      },
+      "followers_short": {
+        "description": "Followers, shortened (12.3K, 1.2M)",
+        "type": "string",
+        "max_length": 6,
+        "group": "counts",
+        "example": "12.3K"
+      },
+      "following_short": {
+        "description": "Accounts followed, shortened",
+        "type": "string",
+        "max_length": 6,
+        "group": "counts",
+        "example": "321"
+      },
+      "posts_short": {
+        "description": "Posts, shortened",
+        "type": "string",
+        "max_length": 6,
+        "group": "counts",
+        "example": "4.6K"
+      },
+      "followers_count": {
+        "description": "Followers as a plain number",
+        "type": "number",
+        "group": "counts",
+        "example": "12345"
+      },
+      "following_count": {
+        "description": "Accounts followed as a plain number",
+        "type": "number",
+        "group": "counts",
+        "example": "321"
+      },
+      "posts_count": {
+        "description": "Posts as a plain number",
+        "type": "number",
+        "group": "counts",
+        "example": "4567"
+      },
+      "followers_change": {
+        "description": "Change in followers today, such as +12 or -3 (empty when daily change is off)",
+        "type": "string",
+        "max_length": 8,
+        "group": "daily_change",
+        "example": "+12"
+      },
+      "following_change": {
+        "description": "Change in accounts followed today",
+        "type": "string",
+        "max_length": 8,
+        "group": "daily_change",
+        "example": "+1"
+      },
+      "posts_change": {
+        "description": "Change in posts today",
+        "type": "string",
+        "max_length": 8,
+        "group": "daily_change",
+        "example": "+3"
+      },
+      "followers_trend_tile": {
+        "description": "One colour tile: green when followers went up today, red when down, empty otherwise",
+        "type": "string",
+        "max_length": 1,
+        "group": "daily_change",
+        "example": "{66}"
+      }
+    }
+  },
+  "teaser": "12,345 FOLLOWERS",
+  "previews": [
+    {
+      "device_type": "flagship",
+      "rows": [
+        "  @ALICE@EXAMPLE.SOCIAL",
+        "",
+        "FOLLOWERS  12,345 {66}+12",
+        "FOLLOWING     321   +1",
+        "POSTS       4,567   +3",
+        ""
+      ]
+    },
+    {
+      "device_type": "note",
+      "rows": [
+        "@ALICE@EXAMPLE.SOCIAL",
+        "12.3K FOLLOWERS",
+        "{66}+12 TODAY"
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "docs/board-display.png",
+      "alt": "Mastodon follower, following and post counts on a FiestaBoard",
+      "caption": "The default template",
+      "primary": true
+    }
+  ],
+  "demo": {
+    "flagship": {
+      "name": "Mastodon Stats Demo",
+      "template": [
+        "{{mastodon_stats.handle}}",
+        "",
+        "FOLLOWERS {{mastodon_stats.followers}} {{mastodon_stats.followers_trend_tile}}{{mastodon_stats.followers_change}}",
+        "FOLLOWING {{mastodon_stats.following}} {{mastodon_stats.following_change}}",
+        "POSTS {{mastodon_stats.posts}} {{mastodon_stats.posts_change}}",
+        ""
+      ],
+      "line_metadata": [
+        {
+          "alignment": "center",
+          "wrap": false
+        },
+        {
+          "alignment": "left",
+          "wrap": false
+        },
+        {
+          "alignment": "left",
+          "wrap": false
+        },
+        {
+          "alignment": "left",
+          "wrap": false
+        },
+        {
+          "alignment": "left",
+          "wrap": false
+        },
+        {
+          "alignment": "left",
+          "wrap": false
+        }
+      ]
+    },
+    "note": {
+      "name": "Mastodon Stats (Note)",
+      "template": [
+        "{{mastodon_stats.handle}}",
+        "{{mastodon_stats.followers_short}} FOLLOWERS",
+        "{{mastodon_stats.followers_trend_tile}}{{mastodon_stats.followers_change}} TODAY"
+      ],
+      "line_metadata": [
+        {
+          "alignment": "left",
+          "wrap": false
+        },
+        {
+          "alignment": "left",
+          "wrap": false
+        },
+        {
+          "alignment": "left",
+          "wrap": false
+        }
+      ]
+    }
+  }
+}
