@@ -36,7 +36,7 @@ In the FiestaBoard web UI:
 
 ### 3. Create a Board Template
 
-1. Go to **Templates** and create a new template
+1. Go to **Pages** and create a new page (or create one from the plugin's demo)
 2. Add the variables you want, for example:
 
 ```
@@ -49,7 +49,7 @@ POSTS {{mastodon_stats.posts}} {{mastodon_stats.posts_change}}
 
 ### 4. View on Your Board
 
-Activate the template. Counts refresh every 15 minutes by default.
+Show the page on your board. Counts refresh every 15 minutes by default.
 
 ## Template Variables
 

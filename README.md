@@ -62,7 +62,7 @@ POSTS {{mastodon_stats.posts}} {{mastodon_stats.posts_change}}
 **Compact (Note):**
 
 ```
-{{mastodon_stats.handle}}
+@{{mastodon_stats.username}}
 {{mastodon_stats.followers_short}} FOLLOWERS
 {{mastodon_stats.followers_trend_tile}}{{mastodon_stats.followers_change}} TODAY
 ```

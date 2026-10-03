@@ -186,12 +186,12 @@
       }
     }
   },
-  "teaser": "12,345 FOLLOWERS",
+  "teaser": "12.3K FOLLOWERS",
   "previews": [
     {
       "device_type": "flagship",
       "rows": [
-        "  @ALICE@EXAMPLE.SOCIAL",
+        " @ALICE@EXAMPLE.SOCIAL",
         "",
         "FOLLOWERS  12,345 {66}+12",
         "FOLLOWING     321   +1",
@@ -202,7 +202,7 @@
     {
       "device_type": "note",
       "rows": [
-        "@ALICE@EXAMPLE.SOCIAL",
+        "@ALICE",
         "12.3K FOLLOWERS",
         "{66}+12 TODAY"
       ]
@@ -257,7 +257,7 @@
     "note": {
       "name": "Mastodon Stats (Note)",
       "template": [
-        "{{mastodon_stats.handle}}",
+        "@{{mastodon_stats.username}}",
         "{{mastodon_stats.followers_short}} FOLLOWERS",
         "{{mastodon_stats.followers_trend_tile}}{{mastodon_stats.followers_change}} TODAY"
       ],

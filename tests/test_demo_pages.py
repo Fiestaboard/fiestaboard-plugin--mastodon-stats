@@ -66,3 +66,13 @@ def test_demo_variables_are_defined(device_type: str, template: list) -> None:
     assert not invalid, (
         f"Demo '{device_type}' references undefined variables: {invalid}"
     )
+
+
+def test_manifest_passes_core_validation() -> None:
+    """Core refuses a manifest whose teaser or previews overflow the board."""
+    from src.plugins.manifest import validate_manifest, validate_preview_completeness
+
+    manifest = _load_manifest()
+    ok, errors = validate_manifest(manifest)
+    assert ok, errors
+    assert validate_preview_completeness(manifest) == []
